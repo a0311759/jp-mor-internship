@@ -1,22 +1,23 @@
 
 import subprocess
 import sys
+import os
 
-# Function to install packages
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-# List of required packages
-required_packages = ['yfinance', 'streamlit', 'pandas']
-
-# Install each required package if not already installed
-for package in required_packages:
+# Function to generate the requirements.txt file
+def generate_requirements():
     try:
-        __import__(package)
-    except ImportError:
-        install(package)
+        # Freeze the current environment's installed packages and save to requirements.txt
+        with open('requirements.txt', 'w') as f:
+            subprocess.check_call([sys.executable, "-m", "pip", "freeze"], stdout=f)
+        print("requirements.txt has been created.")
+    except Exception as e:
+        print(f"Failed to generate requirements.txt: {e}")
 
-# Now import the packages normally after ensuring they are installed
+# Check if requirements.txt exists, if not, generate it
+if not os.path.exists('requirements.txt'):
+    generate_requirements()
+
+# Continue with the rest of your application
 import yfinance as yf
 import streamlit as st
 import pandas as pd
@@ -52,4 +53,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
