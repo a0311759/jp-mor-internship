@@ -1,4 +1,22 @@
 
+import subprocess
+import sys
+
+# Function to install packages
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# List of required packages
+required_packages = ['yfinance', 'streamlit', 'pandas']
+
+# Install each required package if not already installed
+for package in required_packages:
+    try:
+        __import__(package)
+    except ImportError:
+        install(package)
+
+# Now import the packages normally after ensuring they are installed
 import yfinance as yf
 import streamlit as st
 import pandas as pd
@@ -34,3 +52,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
